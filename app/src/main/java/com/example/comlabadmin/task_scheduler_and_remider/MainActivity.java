@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button pop = (Button) findViewById(R.id.Pop);
+        Button pop = (Button) findViewById(R.id.addSched);
 
         pop.setOnClickListener(new View.OnClickListener() {
             @Override
