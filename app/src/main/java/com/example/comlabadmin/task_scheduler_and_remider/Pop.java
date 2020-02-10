@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -21,12 +22,14 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import static com.example.comlabadmin.task_scheduler_and_remider.AlarmReceiver.NOTIFICATION;
+import static com.example.comlabadmin.task_scheduler_and_remider.AlarmReceiver.NOTIFICATION_ID;
+
 public class Pop extends Activity{
 
     EditText date, time, title;
     Button btndate, btntime, setsched;
     private int mYear, mMonth, mDay, mHour, mMins;
-    String sched;
 
     Calendar alert = Calendar.getInstance();
 
@@ -107,24 +110,27 @@ public class Pop extends Activity{
             @Override
             public void onClick(View view){
 
-                long alertTime = alert.getTimeInMillis();
-                scheduleNotification(getNotification(title.toString()), alertTime);
+                long alertTime = alert.getTimeInMillis() - calendar.getTimeInMillis();
 
                 Toast.makeText(Pop.this, "This is calendar time: " + String.valueOf(calendar.getTimeInMillis()), Toast.LENGTH_LONG).show();
-                Toast.makeText(Pop.this, "This is alert time: " + String.valueOf(alertTime), Toast.LENGTH_LONG).show();
+                Toast.makeText(Pop.this, "This is alert time: " + String.valueOf(alertTime),Toast.LENGTH_LONG).show();
+
+                scheduleNotification(getNotification(title.toString()), alertTime);
+
+
             }
         });
     }
 
     private void scheduleNotification(Notification notification, long alertTime) {
         Intent notificationIntent = new Intent(this, AlarmReceiver.class);
-        notificationIntent.putExtra(AlarmReceiver.NOTIFICATION_ID, 1);
-        notificationIntent.putExtra(AlarmReceiver.NOTIFICATION, notification);
+        notificationIntent.putExtra(NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
+        long futureInMillis = SystemClock.elapsedRealtime() + alertTime;
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime , pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
     private Notification getNotification(String content) {

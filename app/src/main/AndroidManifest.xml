@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".AlarmReceiver" />
+
         <activity android:name=".Pop"
             android:theme="@style/AppTheme.CustomTheme">
 
