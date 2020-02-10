@@ -6,24 +6,36 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="136dp"
-        android:id="@+id/etDate" />
+        android:layout_marginBottom="44dp"
+        android:id="@+id/etTitle"
+        android:layout_above="@+id/btnDate"
+        android:layout_alignStart="@+id/etDate"
+        android:layout_alignEnd="@+id/btnDate" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_marginTop="172dp"
+        android:id="@+id/etDate"
+        android:layout_marginStart="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:editable="false"/>
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
         android:ems="10"
         android:layout_below="@+id/etDate"
         android:layout_alignEnd="@+id/etDate"
         android:layout_marginTop="65dp"
-        android:id="@+id/etTime" />
+        android:id="@+id/etTime"
+        android:editable="false"/>
 
     <Button
         android:text="Date"
@@ -33,4 +45,35 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="18dp"
         android:id="@+id/btnDate" />
+
+    <Button
+        android:text="Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnTime"
+        android:layout_alignBaseline="@+id/etTime"
+        android:layout_alignBottom="@+id/etTime"
+        android:layout_alignStart="@+id/btnDate" />
+
+    <Button
+        android:text="SET SCHEDULE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:id="@+id/setSched"
+        android:layout_below="@+id/btnTime"
+        android:layout_alignEnd="@+id/btnTime"
+        android:layout_alignStart="@+id/etTime" />
+
+    <TextView
+        android:text="Set Title:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etTitle"
+        android:layout_alignStart="@+id/etTitle"
+        android:layout_marginBottom="28dp"
+        android:id="@+id/textView"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="normal|bold"
+        android:textSize="30sp" />
 </RelativeLayout>
