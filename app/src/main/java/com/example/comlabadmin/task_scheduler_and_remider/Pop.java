@@ -17,11 +17,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Pop extends Activity{
 
@@ -31,6 +29,8 @@ public class Pop extends Activity{
     String sched;
 
     Calendar alert = Calendar.getInstance();
+
+    final Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,14 @@ public class Pop extends Activity{
                     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                         date.setText(dayOfMonth + "-" + month + "-" + year);
 
+                        Toast.makeText(Pop.this, "This is calendar time: " + String.valueOf(alert.getTime()), Toast.LENGTH_LONG).show();
+                        alert.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        Toast.makeText(Pop.this, "This is dayOfMonth time: " + String.valueOf(dayOfMonth), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Pop.this, "This is calendar time: " + String.valueOf(alert.getTime()), Toast.LENGTH_LONG).show();
+                        alert.set(Calendar.MONTH, month);
+                        Toast.makeText(Pop.this, "This is month time: " + String.valueOf(month), Toast.LENGTH_SHORT).show();
+                        alert.set(Calendar.YEAR, year);
+                        Toast.makeText(Pop.this, "This is year time: " + String.valueOf(year), Toast.LENGTH_SHORT).show();
                     }
                 },mYear,mMonth,mDay);
                 DatePicker.show();
@@ -77,7 +85,6 @@ public class Pop extends Activity{
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                final Calendar calendar = Calendar.getInstance();
                 mHour = calendar.get(Calendar.HOUR_OF_DAY);
                 mMins = calendar.get(Calendar.MINUTE);
 
@@ -85,6 +92,11 @@ public class Pop extends Activity{
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                         time.setText(hour + ":" + minute);
+
+                        alert.set(Calendar.HOUR_OF_DAY, hour);
+                        Toast.makeText(Pop.this, "This is hour time: " + String.valueOf(hour), Toast.LENGTH_SHORT).show();
+                        alert.set(Calendar.MINUTE, minute);
+                        Toast.makeText(Pop.this, "This is minute time: " + String.valueOf(minute), Toast.LENGTH_SHORT).show();
                     }
                 }, mHour, mMins, false);
                 TimePicker.show();
@@ -95,24 +107,24 @@ public class Pop extends Activity{
             @Override
             public void onClick(View view){
 
-                alert.setTimeInMillis(System.currentTimeMillis());
+                long alertTime = alert.getTimeInMillis();
+                scheduleNotification(getNotification(title.toString()), alertTime);
 
-                scheduleNotification(getNotification(title.toString()),);
+                Toast.makeText(Pop.this, "This is calendar time: " + String.valueOf(calendar.getTimeInMillis()), Toast.LENGTH_LONG).show();
+                Toast.makeText(Pop.this, "This is alert time: " + String.valueOf(alertTime), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void scheduleNotification(Notification notification, long ms) {
-
+    private void scheduleNotification(Notification notification, long alertTime) {
         Intent notificationIntent = new Intent(this, AlarmReceiver.class);
         notificationIntent.putExtra(AlarmReceiver.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(AlarmReceiver.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        time.add(Calendar.HOUR_OF_DAY, );
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime , pendingIntent);
     }
 
     private Notification getNotification(String content) {
