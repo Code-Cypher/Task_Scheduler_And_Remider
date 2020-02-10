@@ -14,11 +14,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button pop = (Button) findViewById(R.id.addSched);
+        Button sched = (Button) findViewById((R.id.viewSched));
 
         pop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Pop.class));
+            }
+        });
+
+        sched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,schedules.class));
             }
         });
     }
